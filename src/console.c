@@ -33,10 +33,21 @@ void init_terminal() {
 
 }
 
+/* Function: get_user_pattern
+ * --------------------------
+ * Create a pattern struct with the information that the user
+ * inputs and return it to the struct pointer
+ *
+ * pattern_t *pattern: Struct pointer where to store the information
+ *
+ * returns: nothing
+*/
+
 void get_user_pattern(pattern_t *pattern) {
     // Allocate memory for the rows of the pattern array
     pattern->pattern = malloc(terminal_params.ws_row * sizeof(char*));
     if (pattern->pattern == NULL) {
+        // Test case to return if error occurs when allocating memory
         perror("Failed to allocate memory for pattern rows");
         exit(1);
     }
@@ -118,12 +129,15 @@ void update_terminal(update_console_funcs function) {
     printf("\n");
 }
 
+
+// Used as inputs for the update_terminal function to not repeat the same loop
 void set_clear_chars(int i, int j) {
     terminal_ptr -> screen[i][j] = ' ';
 }
 
 void print_chars(int i, int j) {
     if (terminal_ptr -> screen[i][j] == '*') {
+        // Ansi escape code to represent a white square
         printf("\033[48;2;255;255;255m \033[0m");
     }
     else {

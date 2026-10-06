@@ -43,7 +43,15 @@ void matrix_init(char *pattern[], int pattern_size_X, int pattern_size_Y, termin
     }
 }
 
-// TODO: Comment functions
+/* Function: simulate_behavior
+ * ---------------------------
+ * Gets the struct with the terminal and simulates the behavior of the pattern inputted
+ * with the dot structures generated in matrix_init function
+ *
+ * terminal_struct* terminal: Pointer to terminal struct
+ *
+ * return: nothing
+*/
 
 void simulate_behavior(terminal_struct* terminal) {
     sleep(2);
@@ -78,7 +86,18 @@ void simulate_behavior(terminal_struct* terminal) {
     }
 }
 
-// Return the number of neighbours the position has
+/* Function: check_neighbors
+ * -------------------------
+ * Return the number of neighbours the inputted position has
+ *
+ * dot_t new_dots[]: Arary with the new dots generated
+ * int *num_new_dots: Lenght of the new_dots array
+ * int posY, int posX: Position where to check how many neighbors are
+ * int is_dot: If it is a dot, we do more tests
+ *
+ * returns: number of neightbors the inputted position has
+*/
+
 int check_neighbors(dot_t new_dots[], int *num_new_dots, int posY, int posX, int is_dot) {
     int neighbors = 0;
     for (int i = -1; i < 2; i++) {
@@ -117,6 +136,7 @@ int check_neighbors(dot_t new_dots[], int *num_new_dots, int posY, int posX, int
     return neighbors;
 }
 
+// Used just to iter the dots_arr array and check if there is any instance with the inputted positions
 int dot_exists(dot_t dots_arr[], int *num_dots, int posY, int posX) {
     for (int i = 0; i < *num_dots; i++) {
         if (dots_arr[i].posY == posY && dots_arr[i].posX == posX) {
