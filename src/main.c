@@ -15,11 +15,14 @@ int main(int argc, char *argv[]) {
                                 .terminal_params = &terminal_params};
     terminal_struct* terminal_ptr = &terminal;
 
+    // Allocate space for all the columns the terminal has
     for (int i = 0; i < terminal_params.ws_row; i++) {
         terminal_ptr -> screen[i] = malloc(terminal_params.ws_col * sizeof(char));
     }
 
-    // Try to print the characters to fill the terminal
-    init_terminal(terminal_ptr);
+    update_terminal(terminal_ptr, set_clear_chars);
+    terminal_ptr -> screen[terminal_ptr -> midY][terminal_ptr -> midX] = '*';
+    update_terminal(terminal_ptr, print_chars);
+
     return 0;
 }

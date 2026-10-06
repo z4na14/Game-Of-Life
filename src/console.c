@@ -2,19 +2,27 @@
 #include <stdio.h>
 
 
-int init_terminal(terminal_struct *terminal)
+void set_clear_chars(terminal_struct *terminal, int i, int j)
+{
+    terminal -> screen[i][j] = ' ';
+}
+
+void print_chars(terminal_struct *terminal, int i, int j)
+{
+    printf("%c", terminal -> screen[i][j]);
+}
+
+void update_terminal(terminal_struct *terminal, update_console_funcs function)
 {
     printf("\e[1;1H\e[2J");
     for (int i = 0; i < terminal -> terminal_params -> ws_row; i++)
     {
         for (int j = 0; j < terminal -> terminal_params -> ws_col; j++)
         {
-            terminal -> screen[i][j] = ' ';
-            printf(" ");
+            function(terminal, i, j);
         }
         printf("\n");
     }
 
     printf("\n");
-    return 0;
 }
