@@ -36,6 +36,19 @@ void init_terminal()
 
 }
 
+void get_user_pattern(terminal_struct *terminal)
+{
+    int row = 0;
+    char line[terminal -> terminal_params -> ws_col];
+    fgets(line,terminal -> terminal_params -> ws_col,stdin);
+
+    while (line != NULL)
+    {
+        strcpy(terminal -> screen[row], line);
+        fgets(line,terminal -> terminal_params -> ws_col,stdin);
+    }
+}
+
 /* Function: update_terminal
  * ---------------------
  * Writes to the screen array of the terminal struct the updated instance

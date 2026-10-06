@@ -17,18 +17,15 @@ dot_t active_dots[500];
  * returns: nothing
 */
 
-void matrix_init(char *pattern[], int pattern_size_X, int pattern_size_Y, terminal_struct* terminal)
+void matrix_init(terminal_struct* terminal)
 {
     // Define the middle part for the terminal and the pattern to do the calculations
     int midX = terminal -> midX, midY = terminal -> midY;
-    int mid_patternX = pattern_size_X / 2;
-    int mid_patternY = pattern_size_Y / 2;
-
-    for (int i = 0; i < pattern_size_Y; i++)
+    for (int i = 0; i < terminal -> terminal_params -> ws_row; i++)
     {
-        for (int j = 0; j < pattern_size_X; j++)
+        for (int j = 0; j < terminal -> terminal_params -> ws_col; j++)
         {
-            if (pattern[i][j] == '*')
+            if (terminal -> screen[i][j] == '*')
             {
                 // Create the new dot instance
                 dot_t dot = {.posX = (j < mid_patternX) ? midX - (mid_patternX - j) : midX + (j - mid_patternX),

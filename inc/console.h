@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <string.h>
 // console.h (console.c) -> dot.h (dot.c) -> main.c
 
 
