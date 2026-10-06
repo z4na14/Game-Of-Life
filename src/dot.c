@@ -7,7 +7,7 @@ dot_ptr active_dots[100];
 
 /* Function: matrix_init
  * ---------------------
- * Initialize the matrix of dots using the pattern inputted by the used
+ * Initialize the matrix of dots using the pattern inputted by the user
  *
  * *pattern[]: Array of strings that contains the pattern
  * pattern_size_X: The number of columns the pattern has
@@ -51,7 +51,7 @@ void simulate_behavior(terminal_struct* terminal)
     {
         int num_new_dots = 0;
         dot_ptr new_dots[100];
-        // For all active nodes, we check for deletions or creations and then we update the original array
+        // For all active dots, we check for deletions or creations and then we update the original array
         for (int i = 0; i < num_active_dots; i++)
         {
             // Then we clear the active dots from the previous frame
@@ -85,12 +85,12 @@ void simulate_behavior(terminal_struct* terminal)
 int check_neighbors(dot_ptr new_nodes[], int *num_new_nodes, int posY, int posX, int is_dot)
 {
     int neighbors = 0;
-    for (int i = 0; i < 3; i++)
+    for (int i = -1; i < 2; i++)
     {
-        for (int j = 0; j < 3; j++)
+        for (int j = -1; j < 2; j++)
         {
             // Check if we are in the middle pos
-            if (i == posY && j == posX)
+            if (i == 0 && j == 0)
             {
                 continue;
             }
@@ -101,13 +101,13 @@ int check_neighbors(dot_ptr new_nodes[], int *num_new_nodes, int posY, int posX,
             // We need to check if each neighbour connect with another dot
             if (is_dot == 1)
             {
-                if (check_neighbors(new_nodes, num_new_nodes, i, j, 0) == 3)
+                if (check_neighbors(new_nodes, num_new_nodes, posY + i, posX + j, 0) == 3)
                 {
                     int found = 0;
                     int z = 0;
                     while (new_nodes[z] != NULL)
                     {
-                        if (new_nodes[z] -> posY == posY && new_nodes[z] -> posX == posX)
+                        if (new_nodes[z] -> posY == posY + i && new_nodes[z] -> posX == posX + j)
                         {
                             found = 1;
                             break;
@@ -117,13 +117,18 @@ int check_neighbors(dot_ptr new_nodes[], int *num_new_nodes, int posY, int posX,
 
                     if (found == 0)
                     {
-                        dot_t new_dot = {.posY = i, .posX = j};
+                        dot_t new_dot = {.posY = i + posY, .posX = j + posX};
                         *num_new_nodes++;
                         new_nodes[*num_new_nodes-1] = &new_dot;
                     }
                 }
             }
         }
+    }
+
+    if (neighbors == 2 || neighbors == 3)
+    {
+        // Add new dot to the array
     }
 
     return neighbors;
