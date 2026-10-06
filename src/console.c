@@ -36,7 +36,6 @@ void init_terminal()
 
 }
 
-
 /* Function: update_terminal
  * ---------------------
  * Writes to the screen array of the terminal struct the updated instance
