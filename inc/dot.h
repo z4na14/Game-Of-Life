@@ -14,5 +14,5 @@ typedef struct
 typedef dot_t* dot_ptr;
 
 void matrix_init(char *pattern[], int pattern_size_X, int pattern_size_Y, terminal_struct* terminal);
-void check_cells();
-void matrix_update(terminal_struct* terminal);
+void init_sim(terminal_struct* terminal);
+int check_cells(terminal_struct* terminal);

@@ -17,7 +17,6 @@ int main(int argc, char *argv[])
                        "***",};
     matrix_init(pattern, strlen(pattern[0]),
     sizeof(pattern)/sizeof(pattern[0]), get_terminal_ptr());
-    update_terminal(print_chars);
 
     return 0;
 }

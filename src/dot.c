@@ -45,12 +45,35 @@ void matrix_init(char *pattern[], int pattern_size_X, int pattern_size_Y, termin
     }
 }
 
-void check_cells()
+void init_sim(terminal_struct* terminal)
 {
-
+    while (1)
+    {
+        if (check_cells(terminal) == 1)
+        {
+            printf("\e[1;1H\e[2J");
+            return;
+        }
+    }
 }
 
-void matrix_update(terminal_struct* terminal)
+int check_cells(terminal_struct* terminal)
 {
+    for (int i = 0; i < num_of_active_dots; i++)
+    {
+        // For each node check if we are out of bounds
+        if (active_nodes[i] -> posY > terminal -> terminal_params -> ws_row ||
+            active_nodes[i] -> posX > terminal -> terminal_params -> ws_col)
+        {
+            return 1;
+        }
 
+        // Then we clear the active dots from the previous frame
+        terminal -> screen[active_nodes[i] -> posY][active_nodes[i] -> posX] = ' ';
+
+
+        // TODO: Figure out how to check current dots and create new array
+    }
+
+    return 0;
 }
