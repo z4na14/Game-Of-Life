@@ -6,6 +6,8 @@ typedef struct
 {
   int posX;
   int posY;
+  // Used for debugging purposes
+  int neighbors;
 } dot_t;
 
 void matrix_init(char *pattern[], int pattern_size_X, int pattern_size_Y, terminal_struct* terminal);

@@ -3,6 +3,7 @@
 #include <sys/ioctl.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 // console.h (console.c) -> dot.h (dot.c) -> main.c
 
 

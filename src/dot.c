@@ -2,7 +2,7 @@
 
 
 int num_active_dots;
-dot_t active_dots[100];
+dot_t active_dots[500];
 
 
 /* Function: matrix_init
@@ -32,7 +32,8 @@ void matrix_init(char *pattern[], int pattern_size_X, int pattern_size_Y, termin
             {
                 // Create the new dot instance
                 dot_t dot = {.posX = (j < mid_patternX) ? midX - (mid_patternX - j) : midX + (j - mid_patternX),
-                             .posY = (i < mid_patternY) ? midY - (mid_patternY - i) : midY + (i - mid_patternY)};
+                             .posY = (i < mid_patternY) ? midY - (mid_patternY - i) : midY + (i - mid_patternY),
+                              .neighbors = 0};
 
                 // Add the dot to active dots and change the respective screen position
                 num_active_dots++;
@@ -47,23 +48,26 @@ void matrix_init(char *pattern[], int pattern_size_X, int pattern_size_Y, termin
 
 void simulate_behavior(terminal_struct* terminal)
 {
+    sleep(2);
     while (1)
     {
         int num_new_dots = 0;
-        dot_t new_dots[100];
+        dot_t new_dots[500];
         // For all active dots, we check for deletions or creations and then we update the original array
         for (int i = 0; i < num_active_dots; i++)
         {
             // Then we clear the active dots from the previous frame
-            terminal -> screen[active_dots[i].posY][active_dots[i].posX] = ' ';
+            terminal->screen[active_dots[i].posY][active_dots[i].posX] = ' ';
             check_neighbors(new_dots, &num_new_dots, active_dots[i].posY, active_dots[i].posX, 1);
         }
 
+        num_active_dots = num_new_dots;
         // If any of the new nodes gets outside of bounds, we end the program
         for (int i = 0; i < num_new_dots; i++)
         {
             if (new_dots[i].posY >= terminal -> terminal_params -> ws_row ||
-                new_dots[i].posX >= terminal -> terminal_params -> ws_col)
+                new_dots[i].posX >= terminal -> terminal_params -> ws_col ||
+                new_dots[i].posY < 0 || new_dots[i].posX < 0)
             {
                 return;
             }
@@ -74,10 +78,10 @@ void simulate_behavior(terminal_struct* terminal)
             terminal -> screen[new_dots[i].posY][new_dots[i].posX] = '*';
         }
 
+        num_new_dots = 0;
         // Finally print the new chars
         update_terminal(print_chars);
-
-        // TODO: Set timeout function so the updates are clearly seen on screen
+        sleep(1);
     }
 }
 
@@ -122,21 +126,23 @@ int check_neighbors(dot_t new_dots[], int *num_new_dots, int posY, int posX, int
 
                     if (found == 0)
                     {
-                        dot_t new_dot = {.posY = i + posY, .posX = j + posX};
-                        *num_new_dots++;
-                        new_dots[*num_new_dots-1] = new_dot;
+                        dot_t new_dot = {.posY = i + posY, .posX = j + posX, .neighbors = 3};
+                        printf("%d\n", *num_new_dots);
+                        (*num_new_dots)++;
+                        new_dots[(*num_new_dots)-1] = new_dot;
                     }
                 }
             }
         }
     }
 
-    if (neighbors == 2 || neighbors == 3 || is_dot == 1)
+    if (is_dot == 1 && (neighbors == 2 || neighbors == 3))
     {
+        printf("%d\n", *num_new_dots);
         // Add new dot to array
-        dot_t new_dot = {.posY = posY, .posX = posX};
-        *num_new_dots++;
-        new_dots[*num_new_dots-1] = new_dot;
+        dot_t new_dot = {.posY = posY, .posX = posX, .neighbors = neighbors};
+        (*num_new_dots)++;
+        new_dots[(*num_new_dots)-1] = new_dot;
     }
 
     return neighbors;

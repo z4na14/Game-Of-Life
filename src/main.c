@@ -9,14 +9,14 @@ int main(int argc, char *argv[])
     update_terminal(set_clear_chars);
 
     // Temporal, to check everything works
-    char *pattern[] = {" * ",
-                       "  *",
-                       "* *",};
+    char *pattern[] = {" *   *",
+                       "  ** *",
+                       "*** * ",
+                       " *   *"};
 
     matrix_init(pattern, strlen(pattern[0]),
     sizeof(pattern)/sizeof(pattern[0]), get_terminal_ptr());
     update_terminal(print_chars);
-
     simulate_behavior(get_terminal_ptr());
 
     return 0;
