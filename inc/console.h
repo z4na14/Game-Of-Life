@@ -1,5 +1,9 @@
 #pragma once
+// All C libraries used will be defined here
 #include <sys/ioctl.h>
+#include <stdio.h>
+#include <stdlib.h>
+// console.h (console.c) -> dot.h (dot.c) -> main.c
 
 
 typedef struct winsize winsize_t;
