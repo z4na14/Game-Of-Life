@@ -124,7 +124,9 @@ void set_clear_chars(int i, int j) {
 
 void print_chars(int i, int j) {
     if (terminal_ptr -> screen[i][j] == '*') {
-        printf("")
+        printf("\033[48;2;255;255;255m \033[0m");
     }
-    printf("%c", );
+    else {
+        printf(" ");
+    }
 }
