@@ -1,10 +1,10 @@
 cmake_minimum_required(VERSION 3.29)
 project(Game-Of-Life DESCRIPTION "Simple simulator of the Game of Life")
 
-message("--------------------------")
-message("  Compiling ${PROJECT_NAME}")
-message("      By Z4na14 <3        ")
-message("--------------------------")
+message("----------------------------------")
+message("Creating makefile for ${PROJECT_NAME}")
+message("          By Z4na14 <3        ")
+message("----------------------------------")
 
 set(SRC_DIR ${PROJECT_SOURCE_DIR}/src)
 set(INC_DIR ${PROJECT_SOURCE_DIR}/inc)
