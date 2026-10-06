@@ -61,7 +61,6 @@ void simulate_behavior(terminal_struct* terminal)
             check_neighbors(new_dots, &num_new_dots, active_dots[i].posY, active_dots[i].posX, 1);
         }
 
-        num_active_dots = num_new_dots;
         // If any of the new nodes gets outside of bounds, we end the program
         for (int i = 0; i < num_new_dots; i++)
         {
@@ -77,7 +76,7 @@ void simulate_behavior(terminal_struct* terminal)
             // And the screen array will be updated
             terminal -> screen[new_dots[i].posY][new_dots[i].posX] = '*';
         }
-
+        num_active_dots = num_new_dots;
         num_new_dots = 0;
         // Finally print the new chars
         update_terminal(print_chars);
@@ -109,41 +108,40 @@ int check_neighbors(dot_t new_dots[], int *num_new_dots, int posY, int posX, int
             }
 
             // We need to check if each neighbour connect with another dot
-            if (is_dot == 1)
+            if (is_dot == 1 && check_neighbors(new_dots, num_new_dots, posY + i, posX + j, 0) == 3)
             {
-                if (check_neighbors(new_dots, num_new_dots, posY + i, posX + j, 0) == 3)
+                if (dot_exists(new_dots, num_new_dots, i + posY, j + posX) == 0 && *num_new_dots < 500)
                 {
-                    int found = 0;
-                    for (int z = 0; z < *num_new_dots; z++)
-                    {
-                        if (new_dots[z].posY == posY + i && new_dots[z].posX == posX + j)
-                        {
-                            found = 1;
-                            break;
-                        }
-                        z++;
-                    }
-
-                    if (found == 0)
-                    {
-                        dot_t new_dot = {.posY = i + posY, .posX = j + posX, .neighbors = 3};
-                        printf("%d\n", *num_new_dots);
-                        (*num_new_dots)++;
-                        new_dots[(*num_new_dots)-1] = new_dot;
-                    }
+                    dot_t new_dot = {.posY = i + posY, .posX = j + posX, .neighbors = 3};
+                    (*num_new_dots)++;
+                    new_dots[(*num_new_dots)-1] = new_dot;
                 }
+
             }
         }
     }
 
     if (is_dot == 1 && (neighbors == 2 || neighbors == 3))
     {
-        printf("%d\n", *num_new_dots);
-        // Add new dot to array
-        dot_t new_dot = {.posY = posY, .posX = posX, .neighbors = neighbors};
-        (*num_new_dots)++;
-        new_dots[(*num_new_dots)-1] = new_dot;
+        if (dot_exists(new_dots, num_new_dots, posY, posX) == 0 && *num_new_dots < 500) // Ensures no overflow
+        {
+            // Add new dot to array
+            dot_t new_dot = {.posY = posY, .posX = posX, .neighbors = neighbors};
+            (*num_new_dots)++;
+            new_dots[(*num_new_dots)-1] = new_dot;
+        }
     }
-
     return neighbors;
+}
+
+int dot_exists(dot_t dots_arr[], int *num_dots, int posY, int posX)
+{
+    for (int i = 0; i < *num_dots; i++)
+    {
+        if (dots_arr[i].posY == posY && dots_arr[i].posX == posX)
+        {
+            return 1;
+        }
+    }
+    return 0;
 }
