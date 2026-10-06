@@ -1,28 +1,23 @@
-#include <stdlib.h>
-#include "console.h"
 #include "dot.h"
+#include <string.h>
+// console.h -> dot.h -> main.c
 
 
-int main(int argc, char *argv[]) {
-    // Get the struct with the size of the console
-    winsize_t terminal_params;
-    ioctl(0, TIOCGWINSZ, &terminal_params);
+int main(int argc, char *argv[])
+{
+    // Create terminal instance and set all screen characters clear
+    init_terminal();
+    update_terminal(set_clear_chars);
+    update_terminal(print_chars);
 
-    // Define the structure of the terminal
-    terminal_struct terminal = {.screen = malloc(terminal_params.ws_row * sizeof(char*)),
-                                .midX = terminal_params.ws_col / 2,
-                                .midY = terminal_params.ws_row / 2,
-                                .terminal_params = &terminal_params};
-    terminal_struct* terminal_ptr = &terminal;
 
-    // Allocate space for all the columns the terminal has
-    for (int i = 0; i < terminal_params.ws_row; i++) {
-        terminal_ptr -> screen[i] = malloc(terminal_params.ws_col * sizeof(char));
-    }
-
-    update_terminal(terminal_ptr, set_clear_chars);
-    terminal_ptr -> screen[terminal_ptr -> midY][terminal_ptr -> midX] = '*';
-    update_terminal(terminal_ptr, print_chars);
+    // Temporal, to check everything works
+    char *pattern[] = {" * ",
+                       "  *",
+                       "***",};
+    matrix_init(pattern, strlen(pattern[0]),
+    sizeof(pattern)/sizeof(pattern[0]), get_terminal_ptr());
+    update_terminal(print_chars);
 
     return 0;
 }
