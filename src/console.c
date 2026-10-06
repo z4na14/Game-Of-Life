@@ -1,18 +1,20 @@
 #include "console.h"
+#include <stdio.h>
 
 
-winsize_t create_console(void)
+int init_terminal(terminal_struct *terminal)
 {
-    struct winsize *terminal_size;
-    ioctl(0, TIOCGWINSZ, terminal_size);
-
-    typedef struct
+    printf("\e[1;1H\e[2J");
+    for (int i = 0; i < terminal -> terminal_params -> ws_row; i++)
     {
-        char screen[terminal_size -> ws_row][terminal_size -> ws_col];
-         // TODO: define middle character
-        int midX;
-        int midY;
-    } terminal;
+        for (int j = 0; j < terminal -> terminal_params -> ws_col; j++)
+        {
+            terminal -> screen[i][j] = ' ';
+            printf(" ");
+        }
+        printf("\n");
+    }
 
-    return terminal_size;
+    printf("\n");
+    return 0;
 }
