@@ -9,13 +9,18 @@
 
 
 typedef struct winsize winsize_t;
-typedef struct
-{
+typedef struct {
     char** screen;
     int midX;
     int midY;
     winsize_t* terminal_params;
 } terminal_struct;
+
+typedef struct {
+    int rows;
+    int cols;
+    char** pattern;
+} pattern_t;
 
 terminal_struct* get_terminal_ptr();
 
@@ -25,5 +30,4 @@ void update_terminal(update_console_funcs function);
 void print_chars(int i, int j);
 void set_clear_chars(int i, int j);
 
-
-
+void get_user_pattern(pattern_t *pattern);

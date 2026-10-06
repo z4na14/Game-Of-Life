@@ -2,8 +2,7 @@
 #include "console.h"
 
 
-typedef struct
-{
+typedef struct {
   int posX;
   int posY;
   // Used for debugging purposes
